@@ -15,15 +15,19 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', [GigController::class, 'index'])->name('index');
-Route::get('/gigs', [GigController::class, 'create']);
-Route::post('/gigs', [GigController::class, 'store']);
-Route::get('/gigs/{gig}/edit', [GigController::class, 'edit']);
-Route::post('/gigs/{gig}/edit', [GigController::class, 'update']);
-Route::get('/gigs/{gig}/delete', [GigController::class, 'delete']);
+Route::get('/gigs', [GigController::class, 'create'])->middleware('auth');
+Route::post('/gigs', [GigController::class, 'store'])->middleware('auth');
+Route::get('/gigs/{gig}/edit', [GigController::class, 'edit'])->middleware('auth');
+Route::post('/gigs/{gig}/edit', [GigController::class, 'update'])->middleware('auth');
+Route::get('/gigs/{gig}/delete', [GigController::class, 'delete'])->middleware('auth');
 Route::get('/gigs/{gig}', [GigController::class, 'show']);
 
 Route::get('/search', [GigController::class, 'search']);
 
-Route::get('/register', [UserController::class, 'register']);
-Route::get('/login', [UserController::class, 'login']);
-Route::get('/manage', [UserController::class, 'manage']);
+Route::get('/register', [UserController::class, 'register'])->middleware('guest');
+Route::post('/register', [UserController::class, 'registration'])->name('register')->middleware('guest');
+Route::get('/login', [UserController::class, 'login'])->name('login')->middleware('guest');
+Route::post('/login', [UserController::class, 'authenticate'])->middleware('guest');
+Route::get('/logout', [UserController::class, 'logout'])->middleware('auth');
+
+Route::get('/manage', [UserController::class, 'manage'])->name('manage')->middleware('auth');

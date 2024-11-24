@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Gig;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 
 class GigController extends Controller
@@ -37,6 +38,9 @@ class GigController extends Controller
             'description' => 'required',
         ]);
 
+        $data['user_id'] = auth()->id();
+        // dd($data);
+        // $data['user_id'] = Auth::id();
 
         $gig->create($data);
         return redirect()->route('index');
@@ -44,7 +48,11 @@ class GigController extends Controller
 
     public function edit(Gig $gig)
     {
-        return view('gig.update', ['gig' => $gig]);
+        if ($gig->user_id == auth()->id()) {
+            return view('gig.update', ['gig' => $gig]);
+        } else {
+            abort(403);
+        }
     }
 
     public function update(Gig $gig, Request $request)
@@ -66,8 +74,12 @@ class GigController extends Controller
 
     public function delete(Gig $gig)
     {
-        $gig->delete();
-        return redirect()->route('index');
+        if ($gig->user_id == auth()->id()) {
+            $gig->delete();
+            return redirect()->route('index');
+        } else {
+            abort(403);
+        }
     }
 
     public function search(Gig $gig, Request $request)

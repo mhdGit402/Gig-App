@@ -18,7 +18,7 @@ class GigFactory extends Factory
     {
         return [
             'title' => fake()->sentence(),
-            'tags' => fake()->words(),
+            'tags' => fake()->word(),
             'company' => fake()->company(),
             'location' => fake()->locale(),
             'email' => fake()->email(),

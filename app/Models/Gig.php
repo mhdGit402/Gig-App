@@ -17,5 +17,11 @@ class Gig extends Model
         'email',
         'website',
         'description',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
