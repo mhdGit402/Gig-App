@@ -11,7 +11,7 @@ class GigController extends Controller
 {
     public function index(Gig $gig)
     {
-        $gigs = $gig->latest()->get();
+        $gigs = $gig->latest()->paginate(5);
         return view('index', ['gigs' => $gigs]);
     }
 
@@ -87,7 +87,7 @@ class GigController extends Controller
         $data = $gig->latest()->where('title', 'like', '%' . $request->search . '%')
             ->orWhere('tags', 'like', '%' . $request->search . '%')
             ->orWhere('description', 'like', '%' . $request->search . '%')
-            ->get();
+            ->paginate(5)->withQueryString();
         return view('index', ['gigs' => $data]);
     }
 }

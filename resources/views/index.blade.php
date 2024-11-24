@@ -69,4 +69,6 @@
             @endforEach
         </div>
     </main>
+    {{-- {{ $gigs->appends(Request::except('page'))->links() }} --}}
+    {{ $gigs->links() }}
 @endsection
